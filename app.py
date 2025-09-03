@@ -146,7 +146,8 @@ def generate_receipt():
         
         return jsonify({
             'success': True,
-            'pdf_url': f'/download_pdf/{pdf_filename}',
+            'receipt_id': data.get('receipt_id'),
+            'pdf_filename': pdf_filename,
             'qr_url': data['qr_code_path']
         })
         
@@ -162,6 +163,22 @@ def download_pdf(filename):
     except Exception as e:
         logging.error(f"Error downloading PDF: {e}")
         flash('Error downloading PDF file', 'error')
+        return redirect(url_for('index'))
+
+@app.route('/download_receipt/<receipt_id>')
+def download_receipt(receipt_id):
+    try:
+        pdf_filename = f"receipt_{receipt_id}.pdf"
+        pdf_path = os.path.join('static', pdf_filename)
+        
+        if os.path.exists(pdf_path):
+            return send_file(pdf_path, as_attachment=True, download_name=pdf_filename)
+        else:
+            flash('Receipt file not found', 'error')
+            return redirect(url_for('index'))
+    except Exception as e:
+        logging.error(f"Error downloading receipt: {e}")
+        flash('Error downloading receipt file', 'error')
         return redirect(url_for('index'))
 
 @app.route('/export_business_settings', methods=['POST'])

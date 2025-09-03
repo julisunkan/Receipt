@@ -242,8 +242,14 @@ async function generateReceipt() {
             // Save business settings
             saveBusinessSettings(formData);
             
-            // Download PDF
-            window.open(result.pdf_url, '_blank');
+            // Trigger server-side download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = `/download_receipt/${result.receipt_id}`;
+            downloadLink.download = `receipt_${result.receipt_id}.pdf`;
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
             
             showToast('Receipt generated successfully!', 'success');
             
