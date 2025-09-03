@@ -32,76 +32,10 @@
     <div class="mobile-app-container">
         <!-- Mobile App Header -->
         <div class="app-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+            <div class="text-center">
                 <h1 class="app-title"><i class="fas fa-receipt me-2"></i>Receipt Generator</h1>
-                <div class="header-actions">
-                    <button class="header-btn" onclick="generateReceipt()" title="Generate Receipt">
-                        <i class="fas fa-file-pdf"></i>
-                    </button>
-                </div>
             </div>
         </div>
-
-        <!-- Mobile Navigation Drawer -->
-        <div class="mobile-nav-drawer" id="mobileNavDrawer">
-            <div class="nav-drawer-header">
-                <img src="/static/icon-192x192.png" alt="App Icon" class="nav-app-icon">
-                <div class="nav-app-info">
-                    <h6 class="mb-0">Receipt Generator</h6>
-                    <small class="text-muted">Create professional receipts</small>
-                </div>
-                <button class="close-drawer" onclick="toggleMobileMenu()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="nav-drawer-content">
-                <nav class="mobile-nav-menu">
-                    <a href="#business-section" class="nav-menu-item" onclick="scrollToSection('business-section'); toggleMobileMenu();">
-                        <i class="fas fa-building"></i>
-                        <span>Business Details</span>
-                    </a>
-                    <a href="#client-section" class="nav-menu-item" onclick="scrollToSection('client-section'); toggleMobileMenu();">
-                        <i class="fas fa-user"></i>
-                        <span>Client Details</span>
-                    </a>
-                    <a href="#receipt-section" class="nav-menu-item" onclick="scrollToSection('receipt-section'); toggleMobileMenu();">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>Receipt Details</span>
-                    </a>
-                    <a href="#items-section" class="nav-menu-item" onclick="scrollToSection('items-section'); toggleMobileMenu();">
-                        <i class="fas fa-list"></i>
-                        <span>Items & Pricing</span>
-                    </a>
-                    <a href="#signature-section" class="nav-menu-item" onclick="scrollToSection('signature-section'); toggleMobileMenu();">
-                        <i class="fas fa-signature"></i>
-                        <span>Digital Signature</span>
-                    </a>
-                    <div class="nav-divider"></div>
-                    <div class="nav-menu-item" onclick="exportBusinessSettings(); toggleMobileMenu();">
-                        <i class="fas fa-download"></i>
-                        <span>Export Settings</span>
-                    </div>
-                    <div class="nav-menu-item" onclick="document.getElementById('importFile').click(); toggleMobileMenu();">
-                        <i class="fas fa-upload"></i>
-                        <span>Import Settings</span>
-                    </div>
-                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBusinessSettings(event)">
-                    <div class="nav-divider"></div>
-                    <div class="nav-menu-item" onclick="clearAllData(); toggleMobileMenu();">
-                        <i class="fas fa-trash"></i>
-                        <span>Clear All Data</span>
-                    </div>
-                </nav>
-            </div>
-        </div>
-
-        <!-- Navigation Overlay -->
-        <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
 
         <!-- Main Content -->
         <div class="container-fluid px-0">
@@ -293,7 +227,7 @@
             </div>
 
                 <!-- Submit Button -->
-                <div class="d-grid gap-2 mb-5 px-3">
+                <div class="d-grid gap-2 mb-5 px-3" style="padding-bottom: 100px;">
                     <button type="button" class="btn btn-success btn-lg" onclick="generateReceipt()" style="border-radius: 15px; padding: 1rem; font-size: 1.2rem; font-weight: 600;">
                         <i class="fas fa-file-pdf me-2"></i>Generate Receipt PDF
                     </button>
@@ -301,6 +235,68 @@
             </form>
         </div>
     </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <div class="bottom-nav-item active" onclick="scrollToSection('business-section'); setActiveNav(this);">
+            <i class="fas fa-building"></i>
+            <span>Business</span>
+        </div>
+        <div class="bottom-nav-item" onclick="scrollToSection('client-section'); setActiveNav(this);">
+            <i class="fas fa-user"></i>
+            <span>Client</span>
+        </div>
+        <div class="bottom-nav-item" onclick="scrollToSection('receipt-section'); setActiveNav(this);">
+            <i class="fas fa-file-invoice"></i>
+            <span>Receipt</span>
+        </div>
+        <div class="bottom-nav-item" onclick="scrollToSection('items-section'); setActiveNav(this);">
+            <i class="fas fa-list"></i>
+            <span>Items</span>
+        </div>
+        <div class="bottom-nav-item" onclick="showMoreMenu();">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>More</span>
+        </div>
+    </div>
+
+    <!-- More Menu Modal -->
+    <div class="modal fade" id="moreMenuModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content more-menu-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More Options</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="more-menu-grid">
+                        <div class="more-menu-item" onclick="scrollToSection('signature-section'); hideMoreMenu();">
+                            <i class="fas fa-signature"></i>
+                            <span>Signature</span>
+                        </div>
+                        <div class="more-menu-item" onclick="exportBusinessSettings(); hideMoreMenu();">
+                            <i class="fas fa-download"></i>
+                            <span>Export</span>
+                        </div>
+                        <div class="more-menu-item" onclick="document.getElementById('importFile').click(); hideMoreMenu();">
+                            <i class="fas fa-upload"></i>
+                            <span>Import</span>
+                        </div>
+                        <div class="more-menu-item" onclick="clearAllData(); hideMoreMenu();">
+                            <i class="fas fa-trash"></i>
+                            <span>Clear All</span>
+                        </div>
+                        <div class="more-menu-item" onclick="generateReceipt(); hideMoreMenu();">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Generate PDF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBusinessSettings(event)">
 
     <!-- Mobile Loading Modal -->
     <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
@@ -375,26 +371,6 @@
         });
         
         // Mobile Navigation Functions
-        function toggleMobileMenu() {
-            const drawer = document.getElementById('mobileNavDrawer');
-            const overlay = document.getElementById('navOverlay');
-            const hamburger = document.querySelector('.hamburger-menu');
-            
-            const isOpen = drawer.classList.contains('open');
-            
-            if (isOpen) {
-                drawer.classList.remove('open');
-                overlay.classList.remove('show');
-                hamburger.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                drawer.classList.add('open');
-                overlay.classList.add('show');
-                hamburger.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-        
         function scrollToSection(sectionId) {
             const element = document.getElementById(sectionId);
             if (element) {
@@ -403,6 +379,27 @@
                     block: 'start',
                     inline: 'nearest'
                 });
+            }
+        }
+        
+        function setActiveNav(clickedItem) {
+            // Remove active class from all nav items
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Add active class to clicked item
+            clickedItem.classList.add('active');
+        }
+        
+        function showMoreMenu() {
+            const moreModal = new bootstrap.Modal(document.getElementById('moreMenuModal'));
+            moreModal.show();
+        }
+        
+        function hideMoreMenu() {
+            const moreModal = bootstrap.Modal.getInstance(document.getElementById('moreMenuModal'));
+            if (moreModal) {
+                moreModal.hide();
             }
         }
         
@@ -424,6 +421,38 @@
                 alert('All data has been cleared successfully.');
             }
         }
+        
+        // Auto-set active nav based on scroll position
+        function updateActiveNavOnScroll() {
+            const sections = ['business-section', 'client-section', 'receipt-section', 'items-section'];
+            const navItems = document.querySelectorAll('.bottom-nav-item');
+            
+            let currentSection = '';
+            
+            sections.forEach(sectionId => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        currentSection = sectionId;
+                    }
+                }
+            });
+            
+            // Update active state
+            navItems.forEach((item, index) => {
+                if (index < sections.length) {
+                    if (sections[index] === currentSection) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        // Listen for scroll events
+        window.addEventListener('scroll', updateActiveNavOnScroll);
     </script>
     
     <!-- Mobile App Enhancement Script -->
