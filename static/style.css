@@ -138,17 +138,19 @@ body {
 }
 
 .btn-outline-secondary {
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
+    font-weight: 600;
 }
 
 .btn-outline-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: #667eea;
+    border-color: #667eea;
     color: white;
     transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btn-success {
