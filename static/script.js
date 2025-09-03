@@ -121,7 +121,7 @@ function calculateTotals() {
             const price = parseFloat(priceInput.value) || 0;
             const itemTotal = quantity * price;
             
-            totalSpan.textContent = `${currentCurrencySymbol}${itemTotal.toFixed(2)}`;
+            totalSpan.textContent = `${currentCurrencySymbol}${formatCurrency(itemTotal)}`;
             subtotal += itemTotal;
         }
     });
@@ -135,10 +135,10 @@ function calculateTotals() {
     const grandTotal = subtotal + taxAmount - discount;
     
     // Update display
-    document.getElementById('subtotal').textContent = `${currentCurrencySymbol}${subtotal.toFixed(2)}`;
-    document.getElementById('taxAmount').textContent = `${currentCurrencySymbol}${taxAmount.toFixed(2)}`;
-    document.getElementById('discountAmount').textContent = `${currentCurrencySymbol}${discount.toFixed(2)}`;
-    document.getElementById('grandTotal').textContent = `${currentCurrencySymbol}${Math.max(0, grandTotal).toFixed(2)}`;
+    document.getElementById('subtotal').textContent = `${currentCurrencySymbol}${formatCurrency(subtotal)}`;
+    document.getElementById('taxAmount').textContent = `${currentCurrencySymbol}${formatCurrency(taxAmount)}`;
+    document.getElementById('discountAmount').textContent = `${currentCurrencySymbol}${formatCurrency(discount)}`;
+    document.getElementById('grandTotal').textContent = `${currentCurrencySymbol}${formatCurrency(Math.max(0, grandTotal))}`;
 }
 
 // Update currency symbol when currency changes
@@ -518,6 +518,14 @@ function enableFormValidation() {
 // Print receipt functionality
 function printReceipt() {
     window.print();
+}
+
+// Format currency with thousand separators
+function formatCurrency(amount) {
+    return parseFloat(amount).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }
 
 // Keyboard shortcuts

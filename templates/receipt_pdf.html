@@ -263,8 +263,8 @@
             <tr>
                 <td>{{ item.name }}</td>
                 <td class="text-right">{{ item.quantity }}</td>
-                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(item.price|float) }}</td>
-                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format((item.quantity|float * item.price|float)) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "{:,.2f}"|format(item.price|float) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "{:,.2f}"|format((item.quantity|float * item.price|float)) }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -274,23 +274,23 @@
         <table class="totals-table">
             <tr>
                 <td>Subtotal:</td>
-                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.subtotal|float) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "{:,.2f}"|format(data.subtotal|float) }}</td>
             </tr>
             {% if data.tax_amount and data.tax_amount|float > 0 %}
             <tr>
                 <td>Tax ({{ data.tax_rate }}%):</td>
-                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.tax_amount|float) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "{:,.2f}"|format(data.tax_amount|float) }}</td>
             </tr>
             {% endif %}
             {% if data.discount and data.discount|float > 0 %}
             <tr>
                 <td>Discount:</td>
-                <td class="text-right">-{{ data.currency_symbol }}{{ "%.2f"|format(data.discount|float) }}</td>
+                <td class="text-right">-{{ data.currency_symbol }}{{ "{:,.2f}"|format(data.discount|float) }}</td>
             </tr>
             {% endif %}
             <tr>
                 <td>Total Amount:</td>
-                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.grand_total|float) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "{:,.2f}"|format(data.grand_total|float) }}</td>
             </tr>
         </table>
     </div>
