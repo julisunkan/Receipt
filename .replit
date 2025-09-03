@@ -1,8 +1,8 @@
-modules = ["python-3.11"]
+modules = ["web", "nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "postgresql", "tcl", "tk", "zlib", "wkhtmltopdf"]
+packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "postgresql", "tcl", "tk", "wkhtmltopdf", "zlib"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -46,4 +46,3 @@ localPort = 5000
 externalPort = 80
 
 [agent]
-integrations = ["styling_replit==1.0.0"]
