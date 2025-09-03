@@ -85,6 +85,25 @@ def generate_receipt():
         # Get form data
         data = request.get_json()
         
+        # Ensure items is a proper list and calculate totals
+        items_data = data.get('items', [])
+        if not isinstance(items_data, list):
+            data['items'] = []
+        else:
+            data['items'] = items_data
+        
+        # Calculate subtotal, tax, and grand total if not provided
+        if 'subtotal' not in data or 'tax_amount' not in data or 'grand_total' not in data:
+            subtotal = sum(float(item.get('quantity', 0)) * float(item.get('price', 0)) for item in data['items'])
+            tax_rate = float(data.get('tax_rate', 0))
+            discount = float(data.get('discount', 0))
+            tax_amount = (subtotal * tax_rate) / 100
+            grand_total = subtotal + tax_amount - discount
+            
+            data['subtotal'] = "{:.2f}".format(subtotal)
+            data['tax_amount'] = "{:.2f}".format(tax_amount)
+            data['grand_total'] = "{:.2f}".format(max(0, grand_total))
+        
         # Generate QR code with receipt summary
         qr_data = {
             'receipt_id': data.get('receipt_id'),
@@ -112,13 +131,6 @@ def generate_receipt():
         if data.get('logo_filename'):
             logo_path = os.path.join(app.config['UPLOAD_FOLDER'], data['logo_filename'])
             data['logo_absolute_path'] = os.path.abspath(logo_path)
-        
-        # Ensure items is a proper list
-        items_data = data.get('items', [])
-        if not isinstance(items_data, list):
-            data['items'] = []
-        else:
-            data['items'] = items_data
         
         # Generate PDF
         html_content = render_template('receipt_pdf.html', data=data)
@@ -158,28 +170,38 @@ def generate_receipt():
 @app.route('/download_pdf/<filename>')
 def download_pdf(filename):
     try:
+        # Validate filename to prevent directory traversal
+        if not filename or '..' in filename or '/' in filename:
+            return jsonify({'error': 'Invalid filename'}), 400
+            
         pdf_path = os.path.join('static', filename)
+        
+        # Check if file exists
+        if not os.path.exists(pdf_path):
+            return jsonify({'error': 'File not found'}), 404
+            
         return send_file(pdf_path, as_attachment=True, download_name=filename)
     except Exception as e:
         logging.error(f"Error downloading PDF: {e}")
-        flash('Error downloading PDF file', 'error')
-        return redirect(url_for('index'))
+        return jsonify({'error': 'Error downloading PDF file'}), 500
 
 @app.route('/download_receipt/<receipt_id>')
 def download_receipt(receipt_id):
     try:
+        # Validate receipt_id to prevent directory traversal
+        if not receipt_id or '..' in receipt_id or '/' in receipt_id:
+            return jsonify({'error': 'Invalid receipt ID'}), 400
+            
         pdf_filename = f"receipt_{receipt_id}.pdf"
         pdf_path = os.path.join('static', pdf_filename)
         
         if os.path.exists(pdf_path):
             return send_file(pdf_path, as_attachment=True, download_name=pdf_filename)
         else:
-            flash('Receipt file not found', 'error')
-            return redirect(url_for('index'))
+            return jsonify({'error': 'Receipt file not found'}), 404
     except Exception as e:
         logging.error(f"Error downloading receipt: {e}")
-        flash('Error downloading receipt file', 'error')
-        return redirect(url_for('index'))
+        return jsonify({'error': 'Error downloading receipt file'}), 500
 
 @app.route('/export_business_settings', methods=['POST'])
 def export_business_settings():
