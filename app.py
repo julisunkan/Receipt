@@ -89,7 +89,7 @@ def generate_receipt():
         qr_filename = f"qr_{data.get('receipt_id')}.png"
         qr_path = os.path.join(app.config['QR_FOLDER'], qr_filename)
         
-        qr = qrcode.main.QRCode(version=1, box_size=10, border=5)
+        qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(json.dumps(qr_data))
         qr.make(fit=True)
         
@@ -98,6 +98,10 @@ def generate_receipt():
         
         # Add QR code path to data
         data['qr_code_path'] = f'/static/qr/{qr_filename}'
+        
+        # Ensure items is a list for template iteration
+        if 'items' not in data or not isinstance(data['items'], list):
+            data['items'] = []
         
         # Generate PDF
         html_content = render_template('receipt_pdf.html', data=data)
