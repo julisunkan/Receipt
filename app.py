@@ -100,14 +100,16 @@ def generate_receipt():
         data['qr_code_path'] = f'/static/qr/{qr_filename}'
         
         # Debug: Log the data structure
-        logging.debug(f"Received data: {data}")
+        logging.debug(f"Received data keys: {list(data.keys()) if hasattr(data, 'keys') else 'not a dict'}")
         logging.debug(f"Items type: {type(data.get('items', 'missing'))}")
         
-        # Ensure items is a list for template iteration
-        if 'items' not in data or not isinstance(data['items'], list):
+        # Ensure items is a proper list
+        items_data = data.get('items', [])
+        if not isinstance(items_data, list):
+            logging.warning(f"Items is not a list, it's {type(items_data)}. Converting to list.")
             data['items'] = []
-            logging.debug("Items was not a list, set to empty list")
         else:
+            data['items'] = items_data
             logging.debug(f"Items count: {len(data['items'])}")
         
         # Generate PDF
