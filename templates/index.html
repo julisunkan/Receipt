@@ -404,22 +404,23 @@
         }
         
         function clearAllData() {
-            if (confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
-                document.getElementById('receiptForm').reset();
-                document.getElementById('logoPreview').style.display = 'none';
-                if (typeof clearSignature === 'function') {
-                    clearSignature();
-                }
-                // Clear items table
-                const itemsBody = document.getElementById('itemsBody');
-                if (itemsBody) {
-                    itemsBody.innerHTML = '';
-                }
-                calculateTotals();
-                
-                // Show confirmation
-                alert('All data has been cleared successfully.');
+            // Clear form data
+            document.getElementById('receiptForm').reset();
+            document.getElementById('logoPreview').style.display = 'none';
+            if (typeof clearSignature === 'function') {
+                clearSignature();
             }
+            // Clear items table
+            const itemsBody = document.getElementById('itemsBody');
+            if (itemsBody) {
+                itemsBody.innerHTML = '';
+            }
+            calculateTotals();
+            
+            // Refresh the page to reset everything
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         }
         
         // Auto-set active nav based on scroll position
