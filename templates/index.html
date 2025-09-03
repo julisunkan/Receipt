@@ -37,6 +37,11 @@
             </div>
         </div>
 
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message" style="display: none;">
+            <i class="fas fa-check-circle me-2"></i>Data Cleared Successfully
+        </div>
+
         <!-- Main Content -->
         <div class="container-fluid px-0">
 
@@ -404,6 +409,9 @@
         }
         
         function clearAllData() {
+            // Set flag to show success message after refresh
+            localStorage.setItem('dataCleared', 'true');
+            
             // Clear form data
             document.getElementById('receiptForm').reset();
             document.getElementById('logoPreview').style.display = 'none';
@@ -454,6 +462,37 @@
         
         // Listen for scroll events
         window.addEventListener('scroll', updateActiveNavOnScroll);
+        
+        // Check for success message on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('dataCleared') === 'true') {
+                showSuccessMessage();
+                localStorage.removeItem('dataCleared');
+            }
+        });
+        
+        function showSuccessMessage() {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            successMsg.style.opacity = '0';
+            successMsg.style.transform = 'translateY(-10px)';
+            
+            // Fade in animation
+            setTimeout(() => {
+                successMsg.style.transition = 'all 0.3s ease';
+                successMsg.style.opacity = '1';
+                successMsg.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                successMsg.style.opacity = '0';
+                successMsg.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 300);
+            }, 3000);
+        }
     </script>
     
     <!-- Mobile App Enhancement Script -->

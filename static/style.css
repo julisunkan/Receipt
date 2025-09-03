@@ -597,6 +597,26 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+/* Success Message */
+.success-message {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    margin: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(40, 167, 69, 0.3);
+    font-weight: 600;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 10px;
+    z-index: 1100;
+}
+
+.success-message i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 /* Mobile Action Buttons */
 .mobile-actions {
     position: fixed;
