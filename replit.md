@@ -32,7 +32,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Core Features
 - **Receipt Generation**: UUID-based receipt ID generation with customizable business details
-- **PDF Export**: Server-side PDF generation using pdfkit with cross-platform wkhtmltopdf detection
+- **PDF Export**: Server-side PDF generation using WeasyPrint (pure Python, no external dependencies)
 - **QR Code Integration**: Dynamic QR code generation for receipts
 - **Currency Support**: Comprehensive ISO 4217 currency codes with symbols
 - **Business Settings**: Import/export functionality for business configuration persistence
@@ -50,7 +50,7 @@ Preferred communication style: Simple, everyday language.
 - **Flask**: Core web framework for request handling and routing
 - **Werkzeug**: WSGI utilities for file uploads and security
 - **qrcode**: QR code generation library
-- **pdfkit**: PDF generation from HTML templates
+- **weasyprint**: Pure Python PDF generation from HTML templates
 
 ### Frontend Libraries
 - **Bootstrap 5**: CSS framework with dark theme support
@@ -58,7 +58,7 @@ Preferred communication style: Simple, everyday language.
 - **SignaturePad**: JavaScript library for digital signature capture
 
 ### System Dependencies
-- **wkhtmltopdf**: Required by pdfkit for PDF generation (automatically detected across platforms)
+- **Pango, GDK-Pixbuf, librsvg, fontconfig**: Required by WeasyPrint for PDF generation (automatically managed)
 
 ### File System Requirements
 - **Static Directories**: Automated creation of upload and QR code directories
