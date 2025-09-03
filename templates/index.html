@@ -1,520 +1,911 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- PWA Meta Tags -->
-    <meta name="application-name" content="Smart Receipt Generator">
-    <meta name="description" content="Create professional receipts with business and client details, itemized billing, and QR codes">
-    <meta name="theme-color" content="#0d6efd">
-    <meta name="msapplication-navbutton-color" content="#0d6efd">
-    <meta name="apple-mobile-web-app-title" content="Receipt Gen">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="/static/manifest.json">
-    
-    <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/static/icon-192x192.png">
-    <link rel="apple-touch-icon" href="/static/icon-192x192.png">
-    
-    <title>Smart Receipt Generator</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-</head>
-<body>
-    <!-- Mobile App Container -->
-    <div class="mobile-app-container">
-        <!-- Mobile App Header -->
-        <div class="app-header">
-            <div class="text-center">
-                <h1 class="app-title"><i class="fas fa-receipt me-2"></i>Receipt Generator</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        <!-- PWA Meta Tags -->
+        <meta name="application-name" content="Smart Receipt Generator" />
+        <meta
+            name="description"
+            content="Create professional receipts with business and client details, itemized billing, and QR codes"
+        />
+        <meta name="theme-color" content="#0d6efd" />
+        <meta name="msapplication-navbutton-color" content="#0d6efd" />
+        <meta name="apple-mobile-web-app-title" content="Receipt Gen" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+
+        <!-- Manifest -->
+        <link rel="manifest" href="/static/manifest.json" />
+
+        <!-- Icons -->
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="192x192"
+            href="/static/icon-192x192.png"
+        />
+        <link rel="apple-touch-icon" href="/static/icon-192x192.png" />
+
+        <title>Smart Receipt Generator</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="{{ url_for('static', filename='style.css') }}"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <!-- Mobile App Container -->
+        <div class="mobile-app-container">
+            <!-- Mobile App Header -->
+            <div class="app-header">
+                <div class="text-center">
+                    <h1 class="app-title">
+                        <i class="fas fa-receipt me-2"></i>Receipt Generator
+                    </h1>
+                </div>
             </div>
-        </div>
 
-        <!-- Success Message -->
-        <div id="successMessage" class="success-message" style="display: none;">
-            <i class="fas fa-check-circle me-2"></i>Data Cleared Successfully
-        </div>
+            <!-- Success Message -->
+            <div
+                id="successMessage"
+                class="success-message"
+                style="display: none"
+            >
+                <i class="fas fa-check-circle me-2"></i>Data Cleared
+                Successfully
+            </div>
 
-        <!-- Main Content -->
-        <div class="container-fluid px-0">
-
-            <form id="receiptForm" class="needs-validation fade-in" novalidate>
-                <!-- Business Details Section -->
-                <div class="card slide-up" id="business-section">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0"><i class="fas fa-building me-2"></i>Business Details</h4>
-                    </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="businessName" class="form-label">Business Name *</label>
-                            <input type="text" class="form-control" id="businessName" name="business_name" required>
-                            <div class="invalid-feedback">Please provide a business name.</div>
+            <!-- Main Content -->
+            <div class="container-fluid px-0">
+                <form
+                    id="receiptForm"
+                    class="needs-validation fade-in"
+                    novalidate
+                >
+                    <!-- Business Details Section -->
+                    <div class="card slide-up" id="business-section">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-building me-2"></i>Business
+                                Details
+                            </h4>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="businessPhone" class="form-label">Business Phone</label>
-                            <input type="tel" class="form-control" id="businessPhone" name="business_phone">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="businessEmail" class="form-label">Business Email</label>
-                            <input type="email" class="form-control" id="businessEmail" name="business_email">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="businessLogo" class="form-label">Business Logo</label>
-                            <input type="file" class="form-control" id="businessLogo" accept="image/*" onchange="uploadLogo(this)">
-                            <div class="mt-2" id="logoPreview" style="display: none;">
-                                <img id="logoImg" src="" alt="Logo Preview" class="img-thumbnail" style="max-width: 150px; max-height: 100px;">
-                                <input type="hidden" id="logoFilename" name="logo_filename">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="businessName" class="form-label"
+                                        >Business Name *</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="businessName"
+                                        name="business_name"
+                                        required
+                                    />
+                                    <div class="invalid-feedback">
+                                        Please provide a business name.
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label
+                                        for="businessPhone"
+                                        class="form-label"
+                                        >Business Phone</label
+                                    >
+                                    <input
+                                        type="tel"
+                                        class="form-control"
+                                        id="businessPhone"
+                                        name="business_phone"
+                                    />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label
+                                        for="businessEmail"
+                                        class="form-label"
+                                        >Business Email</label
+                                    >
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="businessEmail"
+                                        name="business_email"
+                                    />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="businessLogo" class="form-label"
+                                        >Business Logo</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        id="businessLogo"
+                                        accept="image/*"
+                                        onchange="uploadLogo(this)"
+                                    />
+                                    <div
+                                        class="mt-2"
+                                        id="logoPreview"
+                                        style="display: none"
+                                    >
+                                        <img
+                                            id="logoImg"
+                                            src=""
+                                            alt="Logo Preview"
+                                            class="img-thumbnail"
+                                            style="
+                                                max-width: 150px;
+                                                max-height: 100px;
+                                            "
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="logoFilename"
+                                            name="logo_filename"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label
+                                        for="businessAddress"
+                                        class="form-label"
+                                        >Business Address</label
+                                    >
+                                    <textarea
+                                        class="form-control"
+                                        id="businessAddress"
+                                        name="business_address"
+                                        rows="3"
+                                    ></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3">
-                            <label for="businessAddress" class="form-label">Business Address</label>
-                            <textarea class="form-control" id="businessAddress" name="business_address" rows="3"></textarea>
-                        </div>
                     </div>
-                </div>
-            </div>
 
-                <!-- Client Details Section -->
-                <div class="card slide-up" id="client-section">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0"><i class="fas fa-user me-2"></i>Client Details</h4>
+                    <!-- Client Details Section -->
+                    <div class="card slide-up" id="client-section">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-user me-2"></i>Client Details
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="clientName" class="form-label"
+                                        >Client Name *</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="clientName"
+                                        name="client_name"
+                                        required
+                                    />
+                                    <div class="invalid-feedback">
+                                        Please provide a client name.
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="clientPhone" class="form-label"
+                                        >Client Phone</label
+                                    >
+                                    <input
+                                        type="tel"
+                                        class="form-control"
+                                        id="clientPhone"
+                                        name="client_phone"
+                                    />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="clientEmail" class="form-label"
+                                        >Client Email</label
+                                    >
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="clientEmail"
+                                        name="client_email"
+                                    />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label
+                                        for="clientAddress"
+                                        class="form-label"
+                                        >Client Address</label
+                                    >
+                                    <textarea
+                                        class="form-control"
+                                        id="clientAddress"
+                                        name="client_address"
+                                        rows="3"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="clientName" class="form-label">Client Name *</label>
-                            <input type="text" class="form-control" id="clientName" name="client_name" required>
-                            <div class="invalid-feedback">Please provide a client name.</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="clientPhone" class="form-label">Client Phone</label>
-                            <input type="tel" class="form-control" id="clientPhone" name="client_phone">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="clientEmail" class="form-label">Client Email</label>
-                            <input type="email" class="form-control" id="clientEmail" name="client_email">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="clientAddress" class="form-label">Client Address</label>
-                            <textarea class="form-control" id="clientAddress" name="client_address" rows="3"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-                <!-- Receipt Details Section -->
-                <div class="card slide-up" id="receipt-section">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0"><i class="fas fa-file-invoice me-2"></i>Receipt Details</h4>
+                    <!-- Receipt Details Section -->
+                    <div class="card slide-up" id="receipt-section">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-file-invoice me-2"></i>Receipt
+                                Details
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="receiptId" class="form-label"
+                                        >Receipt ID</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="receiptId"
+                                        name="receipt_id"
+                                        value="{{ receipt_id }}"
+                                        readonly
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="receiptDate" class="form-label"
+                                        >Date</label
+                                    >
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="receiptDate"
+                                        name="date"
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="currency" class="form-label"
+                                        >Currency *</label
+                                    >
+                                    <select
+                                        class="form-select"
+                                        id="currency"
+                                        name="currency"
+                                        required
+                                    >
+                                        {% for currency in currencies %}
+                                        <option
+                                            value="{{ currency.code }}"
+                                            data-symbol="{{ currency.symbol }}"
+                                            {% if currency.code == "USD" %}selected{% endif %}
+                                        >
+                                            {{ currency.code }} {{
+                                            currency.symbol }} - {{
+                                            currency.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="taxRate" class="form-label"
+                                        >Tax Rate (%)</label
+                                    >
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        id="taxRate"
+                                        name="tax_rate"
+                                        min="0"
+                                        max="100"
+                                        step="0.01"
+                                        value="0"
+                                        onchange="calculateTotals()"
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="discount" class="form-label"
+                                        >Discount Amount</label
+                                    >
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        id="discount"
+                                        name="discount"
+                                        min="0"
+                                        step="0.01"
+                                        value="0"
+                                        onchange="calculateTotals()"
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label
+                                        for="paymentStatus"
+                                        class="form-label"
+                                        >Payment Status</label
+                                    >
+                                    <select
+                                        class="form-select"
+                                        id="paymentStatus"
+                                        name="payment_status"
+                                    >
+                                        <option value="Paid">Paid</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Partial">Partial</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="notes" class="form-label"
+                                        >Notes (Optional)</label
+                                    >
+                                    <textarea
+                                        class="form-control"
+                                        id="notes"
+                                        name="notes"
+                                        rows="3"
+                                        placeholder="Additional notes or terms..."
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="receiptId" class="form-label">Receipt ID</label>
-                            <input type="text" class="form-control" id="receiptId" name="receipt_id" value="{{ receipt_id }}" readonly>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="receiptDate" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="receiptDate" name="date">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="currency" class="form-label">Currency *</label>
-                            <select class="form-select" id="currency" name="currency" required>
-                                {% for currency in currencies %}
-                                <option value="{{ currency.code }}" data-symbol="{{ currency.symbol }}" 
-                                    {% if currency.code == 'USD' %}selected{% endif %}>
-                                    {{ currency.code }} {{ currency.symbol }} - {{ currency.name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="taxRate" class="form-label">Tax Rate (%)</label>
-                            <input type="number" class="form-control" id="taxRate" name="tax_rate" min="0" max="100" step="0.01" value="0" onchange="calculateTotals()">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="discount" class="form-label">Discount Amount</label>
-                            <input type="number" class="form-control" id="discount" name="discount" min="0" step="0.01" value="0" onchange="calculateTotals()">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="paymentStatus" class="form-label">Payment Status</label>
-                            <select class="form-select" id="paymentStatus" name="payment_status">
-                                <option value="Paid">Paid</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Partial">Partial</option>
-                            </select>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="notes" class="form-label">Notes (Optional)</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Additional notes or terms..."></textarea>
-                        </div>
-                    </div>
-                    </div>
-                </div>
 
-                <!-- Items Section -->
-                <div class="card slide-up" id="items-section">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="card-title mb-0"><i class="fas fa-list me-2"></i>Items</h4>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="addItem()">
-                            <i class="fas fa-plus me-1"></i>Add
-                        </button>
-                    </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="itemsTable">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40%">Item Name</th>
-                                    <th style="width: 15%">Quantity</th>
-                                    <th style="width: 20%">Price per Unit</th>
-                                    <th style="width: 20%">Total</th>
-                                    <th style="width: 5%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="itemsBody">
-                                <!-- Items will be added here dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Mobile Totals Summary -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px;">
-                                <div class="card-body p-3">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span><strong>Subtotal:</strong></span>
-                                        <span class="h6 mb-0" id="subtotal">$0.00</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span><strong>Tax:</strong></span>
-                                        <span class="h6 mb-0" id="taxAmount">$0.00</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span><strong>Discount:</strong></span>
-                                        <span class="h6 mb-0" id="discountAmount">$0.00</span>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0"><strong>Grand Total:</strong></span>
-                                        <span class="h4 mb-0" style="color: #667eea; font-weight: bold;" id="grandTotal">$0.00</span>
+                    <!-- Items Section -->
+                    <div class="card slide-up" id="items-section">
+                        <div
+                            class="card-header d-flex justify-content-between align-items-center"
+                        >
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-list me-2"></i>Items
+                            </h4>
+                            <button
+                                type="button"
+                                class="btn btn-primary btn-sm"
+                                onclick="addItem()"
+                            >
+                                <i class="fas fa-plus me-1"></i>Add
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-bordered"
+                                    id="itemsTable"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%">
+                                                Item Name
+                                            </th>
+                                            <th style="width: 15%">Quantity</th>
+                                            <th style="width: 20%">
+                                                Price per Unit
+                                            </th>
+                                            <th style="width: 20%">Total</th>
+                                            <th style="width: 5%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemsBody">
+                                        <!-- Items will be added here dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Mobile Totals Summary -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div
+                                        class="card"
+                                        style="
+                                            background: linear-gradient(
+                                                135deg,
+                                                #f8f9fa 0%,
+                                                #e9ecef 100%
+                                            );
+                                            border-radius: 15px;
+                                        "
+                                    >
+                                        <div class="card-body p-3">
+                                            <div
+                                                class="d-flex justify-content-between align-items-center mb-2"
+                                            >
+                                                <span
+                                                    ><strong
+                                                        >Subtotal:</strong
+                                                    ></span
+                                                >
+                                                <span
+                                                    class="h6 mb-0"
+                                                    id="subtotal"
+                                                    >$0.00</span
+                                                >
+                                            </div>
+                                            <div
+                                                class="d-flex justify-content-between align-items-center mb-2"
+                                            >
+                                                <span
+                                                    ><strong>Tax:</strong></span
+                                                >
+                                                <span
+                                                    class="h6 mb-0"
+                                                    id="taxAmount"
+                                                    >$0.00</span
+                                                >
+                                            </div>
+                                            <div
+                                                class="d-flex justify-content-between align-items-center mb-3"
+                                            >
+                                                <span
+                                                    ><strong
+                                                        >Discount:</strong
+                                                    ></span
+                                                >
+                                                <span
+                                                    class="h6 mb-0"
+                                                    id="discountAmount"
+                                                    >$0.00</span
+                                                >
+                                            </div>
+                                            <hr />
+                                            <div
+                                                class="d-flex justify-content-between align-items-center"
+                                            >
+                                                <span class="h5 mb-0"
+                                                    ><strong
+                                                        >Grand Total:</strong
+                                                    ></span
+                                                >
+                                                <span
+                                                    class="h4 mb-0"
+                                                    style="
+                                                        color: #667eea;
+                                                        font-weight: bold;
+                                                    "
+                                                    id="grandTotal"
+                                                    >$0.00</span
+                                                >
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-                <!-- Signature Section -->
-                <div class="card slide-up" id="signature-section">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="card-title mb-0"><i class="fas fa-signature me-2"></i>Digital Signature</h4>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearSignature()">
-                            <i class="fas fa-eraser me-1"></i>Clear
+                    <!-- Signature Section -->
+                    <div class="card slide-up" id="signature-section">
+                        <div
+                            class="card-header d-flex justify-content-between align-items-center"
+                        >
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-signature me-2"></i>Digital
+                                Signature
+                            </h4>
+                            <button
+                                type="button"
+                                class="btn btn-outline-secondary btn-sm"
+                                onclick="clearSignature()"
+                            >
+                                <i class="fas fa-eraser me-1"></i>Clear
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div
+                                class="border rounded"
+                                style="position: relative"
+                            >
+                                <canvas
+                                    id="signatureCanvas"
+                                    width="600"
+                                    height="200"
+                                    style="
+                                        touch-action: none;
+                                        width: 100%;
+                                        max-width: 600px;
+                                        height: 200px;
+                                    "
+                                ></canvas>
+                            </div>
+                            <small class="text-muted"
+                                >Draw your signature above using mouse or
+                                touch</small
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div
+                        class="d-grid gap-2 mb-5 px-3"
+                        style="padding-bottom: 100px"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-success btn-lg"
+                            onclick="generateReceipt()"
+                            style="
+                                border-radius: 15px;
+                                padding: 1rem;
+                                font-size: 1.2rem;
+                                font-weight: 600;
+                            "
+                        >
+                            <i class="fas fa-file-pdf me-2"></i>Generate Receipt
+                            PDF
                         </button>
                     </div>
-                <div class="card-body">
-                    <div class="border rounded" style="position: relative;">
-                        <canvas id="signatureCanvas" width="600" height="200" style="touch-action: none; width: 100%; max-width: 600px; height: 200px;"></canvas>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav">
+            <div
+                class="bottom-nav-item active"
+                onclick="scrollToSection('business-section'); setActiveNav(this);"
+            >
+                <i class="fas fa-building"></i>
+                <span>Business</span>
+            </div>
+            <div
+                class="bottom-nav-item"
+                onclick="scrollToSection('client-section'); setActiveNav(this);"
+            >
+                <i class="fas fa-user"></i>
+                <span>Client</span>
+            </div>
+            <div
+                class="bottom-nav-item"
+                onclick="scrollToSection('receipt-section'); setActiveNav(this);"
+            >
+                <i class="fas fa-file-invoice"></i>
+                <span>Receipt</span>
+            </div>
+            <div
+                class="bottom-nav-item"
+                onclick="scrollToSection('items-section'); setActiveNav(this);"
+            >
+                <i class="fas fa-list"></i>
+                <span>Items</span>
+            </div>
+            <div class="bottom-nav-item" onclick="showMoreMenu();">
+                <i class="fas fa-ellipsis-h"></i>
+                <span>More</span>
+            </div>
+        </div>
+
+        <!-- More Menu Modal -->
+        <div
+            class="modal fade"
+            id="moreMenuModal"
+            tabindex="-1"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content more-menu-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More Options</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
                     </div>
-                    <small class="text-muted">Draw your signature above using mouse or touch</small>
-                </div>
-            </div>
-
-                <!-- Submit Button -->
-                <div class="d-grid gap-2 mb-5 px-3" style="padding-bottom: 100px;">
-                    <button type="button" class="btn btn-success btn-lg" onclick="generateReceipt()" style="border-radius: 15px; padding: 1rem; font-size: 1.2rem; font-weight: 600;">
-                        <i class="fas fa-file-pdf me-2"></i>Generate Receipt PDF
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Mobile Bottom Navigation -->
-    <div class="mobile-bottom-nav">
-        <div class="bottom-nav-item active" onclick="scrollToSection('business-section'); setActiveNav(this);">
-            <i class="fas fa-building"></i>
-            <span>Business</span>
-        </div>
-        <div class="bottom-nav-item" onclick="scrollToSection('client-section'); setActiveNav(this);">
-            <i class="fas fa-user"></i>
-            <span>Client</span>
-        </div>
-        <div class="bottom-nav-item" onclick="scrollToSection('receipt-section'); setActiveNav(this);">
-            <i class="fas fa-file-invoice"></i>
-            <span>Receipt</span>
-        </div>
-        <div class="bottom-nav-item" onclick="scrollToSection('items-section'); setActiveNav(this);">
-            <i class="fas fa-list"></i>
-            <span>Items</span>
-        </div>
-        <div class="bottom-nav-item" onclick="showMoreMenu();">
-            <i class="fas fa-ellipsis-h"></i>
-            <span>More</span>
-        </div>
-    </div>
-
-    <!-- More Menu Modal -->
-    <div class="modal fade" id="moreMenuModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content more-menu-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">More Options</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="more-menu-grid">
-                        <div class="more-menu-item" onclick="scrollToSection('signature-section'); hideMoreMenu();">
-                            <i class="fas fa-signature"></i>
-                            <span>Signature</span>
-                        </div>
-                        <div class="more-menu-item" onclick="exportBusinessSettings(); hideMoreMenu();">
-                            <i class="fas fa-download"></i>
-                            <span>Export</span>
-                        </div>
-                        <div class="more-menu-item" onclick="document.getElementById('importFile').click(); hideMoreMenu();">
-                            <i class="fas fa-upload"></i>
-                            <span>Import</span>
-                        </div>
-                        <div class="more-menu-item" onclick="clearAllData(); hideMoreMenu();">
-                            <i class="fas fa-trash"></i>
-                            <span>Clear All</span>
-                        </div>
-                        <div class="more-menu-item" onclick="generateReceipt(); hideMoreMenu();">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Generate PDF</span>
+                    <div class="modal-body">
+                        <div class="more-menu-grid">
+                            <div
+                                class="more-menu-item"
+                                onclick="scrollToSection('signature-section'); hideMoreMenu();"
+                            >
+                                <i class="fas fa-signature"></i>
+                                <span>Signature</span>
+                            </div>
+                            <div
+                                class="more-menu-item"
+                                onclick="exportBusinessSettings(); hideMoreMenu();"
+                            >
+                                <i class="fas fa-download"></i>
+                                <span>Export</span>
+                            </div>
+                            <div
+                                class="more-menu-item"
+                                onclick="document.getElementById('importFile').click(); hideMoreMenu();"
+                            >
+                                <i class="fas fa-upload"></i>
+                                <span>Import</span>
+                            </div>
+                            <div
+                                class="more-menu-item"
+                                onclick="clearAllData(); hideMoreMenu();"
+                            >
+                                <i class="fas fa-trash"></i>
+                                <span>Clear All</span>
+                            </div>
+                            <div
+                                class="more-menu-item"
+                                onclick="generateReceipt(); hideMoreMenu();"
+                            >
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Generate PDF</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBusinessSettings(event)">
+        <input
+            type="file"
+            id="importFile"
+            accept=".json"
+            style="display: none"
+            onchange="importBusinessSettings(event)"
+        />
 
-    <!-- Mobile Loading Modal -->
-    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; border: none; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
-                <div class="modal-body text-center py-5">
-                    <div class="loading-spinner mb-4"></div>
-                    <h5 style="color: #667eea; font-weight: 600;">Generating Receipt PDF...</h5>
-                    <p class="text-muted">Please wait while we prepare your receipt.</p>
+        <!-- Mobile Loading Modal -->
+        <div
+            class="modal fade"
+            id="loadingModal"
+            tabindex="-1"
+            aria-hidden="true"
+            data-bs-backdrop="static"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div
+                    class="modal-content"
+                    style="
+                        border-radius: 20px;
+                        border: none;
+                        background: rgba(255, 255, 255, 0.95);
+                        backdrop-filter: blur(10px);
+                    "
+                >
+                    <div class="modal-body text-center py-5">
+                        <div class="loading-spinner mb-4"></div>
+                        <h5 style="color: #667eea; font-weight: 600">
+                            Generating Receipt PDF...
+                        </h5>
+                        <p class="text-muted">
+                            Please wait while we prepare your receipt.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    
-    <!-- PWA Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/static/sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    }, function(err) {
-                        console.log('ServiceWorker registration failed: ', err);
+        <!-- PWA Service Worker Registration -->
+        <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker.register("/static/sw.js").then(
+                        function (registration) {
+                            console.log(
+                                "ServiceWorker registration successful with scope: ",
+                                registration.scope,
+                            );
+                        },
+                        function (err) {
+                            console.log(
+                                "ServiceWorker registration failed: ",
+                                err,
+                            );
+                        },
+                    );
+                });
+            }
+
+            // PWA Install Prompt
+            let deferredPrompt;
+
+            window.addEventListener("beforeinstallprompt", (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+
+                // Show install button or banner
+                const installBtn = document.createElement("button");
+                installBtn.innerHTML =
+                    '<i class="fas fa-download me-2"></i>Install App';
+                installBtn.className =
+                    "btn btn-outline-primary btn-sm position-fixed";
+                installBtn.style.cssText =
+                    "top: 10px; right: 10px; z-index: 1050; border-radius: 20px;";
+                installBtn.onclick = () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === "accepted") {
+                            console.log("User accepted the install prompt");
+                            installBtn.remove();
+                        }
+                        deferredPrompt = null;
                     });
-            });
-        }
-        
-        // PWA Install Prompt
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Show install button or banner
-            const installBtn = document.createElement('button');
-            installBtn.innerHTML = '<i class="fas fa-download me-2"></i>Install App';
-            installBtn.className = 'btn btn-outline-primary btn-sm position-fixed';
-            installBtn.style.cssText = 'top: 10px; right: 10px; z-index: 1050; border-radius: 20px;';
-            installBtn.onclick = () => {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
+                };
+                document.body.appendChild(installBtn);
+
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    if (installBtn.parentNode) {
                         installBtn.remove();
                     }
-                    deferredPrompt = null;
-                });
-            };
-            document.body.appendChild(installBtn);
-            
-            // Auto-hide after 10 seconds
-            setTimeout(() => {
-                if (installBtn.parentNode) {
-                    installBtn.remove();
-                }
-            }, 10000);
-        });
-        
-        // Mobile Navigation Functions
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start',
-                    inline: 'nearest'
-                });
-            }
-        }
-        
-        function setActiveNav(clickedItem) {
-            // Remove active class from all nav items
-            document.querySelectorAll('.bottom-nav-item').forEach(item => {
-                item.classList.remove('active');
+                }, 10000);
             });
-            // Add active class to clicked item
-            clickedItem.classList.add('active');
-        }
-        
-        function showMoreMenu() {
-            const moreModal = new bootstrap.Modal(document.getElementById('moreMenuModal'));
-            moreModal.show();
-        }
-        
-        function hideMoreMenu() {
-            const moreModal = bootstrap.Modal.getInstance(document.getElementById('moreMenuModal'));
-            if (moreModal) {
-                moreModal.hide();
-            }
-        }
-        
-        function clearAllData() {
-            // Set flag to show success message after refresh
-            localStorage.setItem('dataCleared', 'true');
-            
-            // Clear form data
-            document.getElementById('receiptForm').reset();
-            document.getElementById('logoPreview').style.display = 'none';
-            if (typeof clearSignature === 'function') {
-                clearSignature();
-            }
-            // Clear items table
-            const itemsBody = document.getElementById('itemsBody');
-            if (itemsBody) {
-                itemsBody.innerHTML = '';
-            }
-            calculateTotals();
-            
-            // Refresh the page to reset everything
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        }
-        
-        // Auto-set active nav based on scroll position
-        function updateActiveNavOnScroll() {
-            const sections = ['business-section', 'client-section', 'receipt-section', 'items-section'];
-            const navItems = document.querySelectorAll('.bottom-nav-item');
-            
-            let currentSection = '';
-            
-            sections.forEach(sectionId => {
+
+            // Mobile Navigation Functions
+            function scrollToSection(sectionId) {
                 const element = document.getElementById(sectionId);
                 if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 100 && rect.bottom >= 100) {
-                        currentSection = sectionId;
-                    }
+                    element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                        inline: "nearest",
+                    });
                 }
-            });
-            
-            // Update active state
-            navItems.forEach((item, index) => {
-                if (index < sections.length) {
-                    if (sections[index] === currentSection) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                }
-            });
-        }
-        
-        // Listen for scroll events
-        window.addEventListener('scroll', updateActiveNavOnScroll);
-        
-        // Check for success message on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('dataCleared') === 'true') {
-                showSuccessMessage();
-                localStorage.removeItem('dataCleared');
             }
-        });
-        
-        function showSuccessMessage() {
-            const successMsg = document.getElementById('successMessage');
-            successMsg.style.display = 'block';
-            successMsg.style.opacity = '0';
-            successMsg.style.transform = 'translateY(-10px)';
-            
-            // Fade in animation
-            setTimeout(() => {
-                successMsg.style.transition = 'all 0.3s ease';
-                successMsg.style.opacity = '1';
-                successMsg.style.transform = 'translateY(0)';
-            }, 100);
-            
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                successMsg.style.opacity = '0';
-                successMsg.style.transform = 'translateY(-10px)';
+
+            function setActiveNav(clickedItem) {
+                // Remove active class from all nav items
+                document
+                    .querySelectorAll(".bottom-nav-item")
+                    .forEach((item) => {
+                        item.classList.remove("active");
+                    });
+                // Add active class to clicked item
+                clickedItem.classList.add("active");
+            }
+
+            function showMoreMenu() {
+                const moreModal = new bootstrap.Modal(
+                    document.getElementById("moreMenuModal"),
+                );
+                moreModal.show();
+            }
+
+            function hideMoreMenu() {
+                const moreModal = bootstrap.Modal.getInstance(
+                    document.getElementById("moreMenuModal"),
+                );
+                if (moreModal) {
+                    moreModal.hide();
+                }
+            }
+
+            function clearAllData() {
+                // Set flag to show success message after refresh
+                localStorage.setItem("dataCleared", "true");
+
+                // Clear form data
+                document.getElementById("receiptForm").reset();
+                document.getElementById("logoPreview").style.display = "none";
+                if (typeof clearSignature === "function") {
+                    clearSignature();
+                }
+                // Clear items table
+                const itemsBody = document.getElementById("itemsBody");
+                if (itemsBody) {
+                    itemsBody.innerHTML = "";
+                }
+                calculateTotals();
+
+                // Refresh the page to reset everything
                 setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 300);
-            }, 3000);
-        }
-    </script>
-    
-    <!-- Mobile App Enhancement Script -->
-    <script>
-        // Add mobile app-like behaviors
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add touch feedback to buttons
-            document.querySelectorAll('.btn, .fab').forEach(btn => {
-                btn.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.95)';
-                });
-                btn.addEventListener('touchend', function() {
-                    this.style.transform = '';
-                });
-            });
-            
-            // Add fade-in animation to cards
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
-                }, 100);
-            });
-            
-            // Hide address bar on mobile
-            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                setTimeout(() => {
-                    window.scrollTo(0, 1);
+                    window.location.reload();
                 }, 100);
             }
-        });
-    </script>
-</body>
+
+            // Auto-set active nav based on scroll position
+            function updateActiveNavOnScroll() {
+                const sections = [
+                    "business-section",
+                    "client-section",
+                    "receipt-section",
+                    "items-section",
+                ];
+                const navItems = document.querySelectorAll(".bottom-nav-item");
+
+                let currentSection = "";
+
+                sections.forEach((sectionId) => {
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        if (rect.top <= 100 && rect.bottom >= 100) {
+                            currentSection = sectionId;
+                        }
+                    }
+                });
+
+                // Update active state
+                navItems.forEach((item, index) => {
+                    if (index < sections.length) {
+                        if (sections[index] === currentSection) {
+                            item.classList.add("active");
+                        } else {
+                            item.classList.remove("active");
+                        }
+                    }
+                });
+            }
+
+            // Listen for scroll events
+            window.addEventListener("scroll", updateActiveNavOnScroll);
+
+            // Check for success message on page load
+            document.addEventListener("DOMContentLoaded", function () {
+                if (localStorage.getItem("dataCleared") === "true") {
+                    showSuccessMessage();
+                    localStorage.removeItem("dataCleared");
+                }
+            });
+
+            function showSuccessMessage() {
+                const successMsg = document.getElementById("successMessage");
+                successMsg.style.display = "block";
+                successMsg.style.opacity = "0";
+                successMsg.style.transform = "translateY(-10px)";
+
+                // Fade in animation
+                setTimeout(() => {
+                    successMsg.style.transition = "all 0.3s ease";
+                    successMsg.style.opacity = "1";
+                    successMsg.style.transform = "translateY(0)";
+                }, 100);
+
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    successMsg.style.opacity = "0";
+                    successMsg.style.transform = "translateY(-10px)";
+                    setTimeout(() => {
+                        successMsg.style.display = "none";
+                    }, 300);
+                }, 3000);
+            }
+        </script>
+
+        <!-- Mobile App Enhancement Script -->
+        <script>
+            // Add mobile app-like behaviors
+            document.addEventListener("DOMContentLoaded", function () {
+                // Add touch feedback to buttons
+                document.querySelectorAll(".btn, .fab").forEach((btn) => {
+                    btn.addEventListener("touchstart", function () {
+                        this.style.transform = "scale(0.95)";
+                    });
+                    btn.addEventListener("touchend", function () {
+                        this.style.transform = "";
+                    });
+                });
+
+                // Add fade-in animation to cards
+                const cards = document.querySelectorAll(".card");
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+
+                // Hide address bar on mobile
+                if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                    setTimeout(() => {
+                        window.scrollTo(0, 1);
+                    }, 100);
+                }
+            });
+        </script>
+    </body>
 </html>
