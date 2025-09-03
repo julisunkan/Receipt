@@ -141,11 +141,14 @@ def generate_receipt():
             'enable-local-file-access': None
         }
         
+        # Configure wkhtmltopdf path
+        config = pdfkit.configuration(wkhtmltopdf='/nix/store/hxiay4lkq4389vxnhnb3d0pbaw6siwkw-wkhtmltopdf/bin/wkhtmltopdf')
+        
         # Generate PDF
         pdf_filename = f"receipt_{data.get('receipt_id')}.pdf"
         pdf_path = os.path.join('static', pdf_filename)
         
-        pdfkit.from_string(html_content, pdf_path, options=options)
+        pdfkit.from_string(html_content, pdf_path, options=options, configuration=config)
         
         return jsonify({
             'success': True,
