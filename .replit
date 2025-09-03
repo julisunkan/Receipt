@@ -2,7 +2,7 @@ modules = ["web", "nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["fontconfig", "freetype", "ghostscript", "glib", "harfbuzz", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "pango", "postgresql", "tcl", "tk", "wkhtmltopdf", "zlib", "gdk-pixbuf", "librsvg"]
+packages = ["fontconfig", "freetype", "gdk-pixbuf", "ghostscript", "glib", "harfbuzz", "lcms2", "libimagequant", "libjpeg", "librsvg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "pango", "postgresql", "tcl", "tk", "wkhtmltopdf", "zlib"]
 
 [deployment]
 deploymentTarget = "autoscale"
