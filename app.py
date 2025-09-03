@@ -3,6 +3,8 @@ import uuid
 import json
 import qrcode
 import logging
+import threading
+import time
 from datetime import datetime
 from io import BytesIO
 from flask import Flask, render_template, request, jsonify, send_file, flash, redirect, url_for
@@ -44,6 +46,21 @@ def allowed_file(filename):
 def generate_receipt_id():
     """Generate a unique receipt ID"""
     return f"RCP-{str(uuid.uuid4())[:8].upper()}"
+
+def delete_file_after_delay(file_path, delay_seconds=60):
+    """Delete a file after a specified delay"""
+    def delete_file():
+        try:
+            time.sleep(delay_seconds)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                logging.info(f"Deleted file: {file_path}")
+        except Exception as e:
+            logging.error(f"Error deleting file {file_path}: {e}")
+    
+    # Run deletion in a separate thread
+    thread = threading.Thread(target=delete_file, daemon=True)
+    thread.start()
 
 def load_currencies():
     """Load currency data from JSON file"""
@@ -155,6 +172,10 @@ def generate_receipt():
         pdf_path = os.path.join('static', pdf_filename)
         
         pdfkit.from_string(html_content, pdf_path, options=options, configuration=config)
+        
+        # Schedule automatic deletion of generated files after 1 minute
+        delete_file_after_delay(pdf_path, 60)
+        delete_file_after_delay(qr_path, 60)
         
         return jsonify({
             'success': True,

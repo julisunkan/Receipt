@@ -251,7 +251,7 @@ async function generateReceipt() {
             downloadLink.click();
             document.body.removeChild(downloadLink);
             
-            showToast('Receipt generated successfully!', 'success');
+            showToast('Receipt generated successfully!<br><small class="text-muted mt-2 d-block"><i class="fas fa-clock me-1"></i>Note: Files will be automatically deleted after 1 minute for security.</small>', 'success');
             
             // Generate new receipt ID for next receipt
             document.getElementById('receiptId').value = generateReceiptId();
