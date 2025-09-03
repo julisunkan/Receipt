@@ -108,6 +108,11 @@ def generate_receipt():
         # Add QR code path to data
         data['qr_code_path'] = os.path.abspath(qr_path)
         
+        # Convert logo filename to absolute path for PDF generation
+        if data.get('logo_filename'):
+            logo_path = os.path.join(app.config['UPLOAD_FOLDER'], data['logo_filename'])
+            data['logo_absolute_path'] = os.path.abspath(logo_path)
+        
         # Debug: Log the data structure
         logging.debug(f"Received data keys: {list(data.keys()) if hasattr(data, 'keys') else 'not a dict'}")
         logging.debug(f"Items type: {type(data.get('items', 'missing'))}")

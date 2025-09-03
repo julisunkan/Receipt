@@ -216,8 +216,8 @@
             {% endif %}
         </div>
         <div class="logo-section">
-            {% if data.logo_filename %}
-            <img src="static/uploads/{{ data.logo_filename }}" alt="Business Logo">
+            {% if data.logo_absolute_path %}
+            <img src="file://{{ data.logo_absolute_path }}" alt="Business Logo">
             {% else %}
             <div style="width: 150px; height: 100px; border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 8px;">
                 <span>LOGO</span>
