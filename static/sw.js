@@ -1,4 +1,4 @@
-const CACHE_NAME = 'smart-receipt-generator-v2';
+const CACHE_NAME = 'smart-receipt-generator-v3';
 const urlsToCache = [
   '/',
   '/static/style.css',
