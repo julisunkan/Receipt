@@ -39,14 +39,197 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Navigation */
-.mobile-nav {
-    background: rgba(255, 255, 255, 0.95);
+/* Hamburger Menu */
+.hamburger-menu {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
     backdrop-filter: blur(10px);
-    border-radius: 20px 20px 0 0;
-    margin-top: 0;
-    padding: 1rem;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Mobile Navigation Drawer */
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 320px;
+    height: 100vh;
+    background: white;
+    z-index: 2000;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-nav-drawer.open {
+    left: 0;
+}
+
+.nav-drawer-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.nav-app-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-app-info h6 {
+    color: white;
+    font-weight: 600;
+    margin: 0;
+}
+
+.nav-app-info small {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.close-drawer {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    margin-left: auto;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.close-drawer:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.mobile-nav-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nav-menu-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    padding-left: 2rem;
+}
+
+.nav-menu-item i {
+    width: 20px;
+    text-align: center;
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+.nav-menu-item span {
+    flex: 1;
+}
+
+.nav-divider {
+    height: 1px;
+    background: #e1e5e9;
+    margin: 0.5rem 1.5rem;
+}
+
+/* Navigation Overlay */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .card {
@@ -251,12 +434,30 @@ body {
     }
     
     .app-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
-    .mobile-nav {
-        padding: 0.75rem;
-        border-radius: 15px 15px 0 0;
+    .mobile-nav-drawer {
+        width: 280px;
+        left: -280px;
+    }
+    
+    .nav-drawer-header {
+        padding: 1rem;
+    }
+    
+    .nav-app-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-menu-item {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .nav-menu-item:hover {
+        padding-left: 1.5rem;
     }
     
     .card {

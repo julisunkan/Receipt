@@ -30,30 +30,85 @@
 <body>
     <!-- Mobile App Container -->
     <div class="mobile-app-container">
-        <!-- App Header -->
+        <!-- Mobile App Header -->
         <div class="app-header">
-            <h1 class="app-title"><i class="fas fa-receipt me-2"></i>Receipt Generator</h1>
-        </div>
-
-        <!-- Mobile Navigation -->
-        <div class="mobile-nav">
-            <div class="d-flex justify-content-center gap-2 mb-3">
-                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="exportBusinessSettings()">
-                    <i class="fas fa-download me-1"></i>Export
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
-                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBusinessSettings(event)">
-                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('importFile').click()">
-                    <i class="fas fa-upload me-1"></i>Import
-                </button>
+                <h1 class="app-title"><i class="fas fa-receipt me-2"></i>Receipt Generator</h1>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="generateReceipt()" title="Generate Receipt">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                </div>
             </div>
         </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div class="mobile-nav-drawer" id="mobileNavDrawer">
+            <div class="nav-drawer-header">
+                <img src="/static/icon-192x192.png" alt="App Icon" class="nav-app-icon">
+                <div class="nav-app-info">
+                    <h6 class="mb-0">Receipt Generator</h6>
+                    <small class="text-muted">Create professional receipts</small>
+                </div>
+                <button class="close-drawer" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="nav-drawer-content">
+                <nav class="mobile-nav-menu">
+                    <a href="#business-section" class="nav-menu-item" onclick="scrollToSection('business-section'); toggleMobileMenu();">
+                        <i class="fas fa-building"></i>
+                        <span>Business Details</span>
+                    </a>
+                    <a href="#client-section" class="nav-menu-item" onclick="scrollToSection('client-section'); toggleMobileMenu();">
+                        <i class="fas fa-user"></i>
+                        <span>Client Details</span>
+                    </a>
+                    <a href="#receipt-section" class="nav-menu-item" onclick="scrollToSection('receipt-section'); toggleMobileMenu();">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Receipt Details</span>
+                    </a>
+                    <a href="#items-section" class="nav-menu-item" onclick="scrollToSection('items-section'); toggleMobileMenu();">
+                        <i class="fas fa-list"></i>
+                        <span>Items & Pricing</span>
+                    </a>
+                    <a href="#signature-section" class="nav-menu-item" onclick="scrollToSection('signature-section'); toggleMobileMenu();">
+                        <i class="fas fa-signature"></i>
+                        <span>Digital Signature</span>
+                    </a>
+                    <div class="nav-divider"></div>
+                    <div class="nav-menu-item" onclick="exportBusinessSettings(); toggleMobileMenu();">
+                        <i class="fas fa-download"></i>
+                        <span>Export Settings</span>
+                    </div>
+                    <div class="nav-menu-item" onclick="document.getElementById('importFile').click(); toggleMobileMenu();">
+                        <i class="fas fa-upload"></i>
+                        <span>Import Settings</span>
+                    </div>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBusinessSettings(event)">
+                    <div class="nav-divider"></div>
+                    <div class="nav-menu-item" onclick="clearAllData(); toggleMobileMenu();">
+                        <i class="fas fa-trash"></i>
+                        <span>Clear All Data</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Navigation Overlay -->
+        <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
 
         <!-- Main Content -->
         <div class="container-fluid px-0">
 
             <form id="receiptForm" class="needs-validation fade-in" novalidate>
                 <!-- Business Details Section -->
-                <div class="card slide-up">
+                <div class="card slide-up" id="business-section">
                     <div class="card-header">
                         <h4 class="card-title mb-0"><i class="fas fa-building me-2"></i>Business Details</h4>
                     </div>
@@ -89,7 +144,7 @@
             </div>
 
                 <!-- Client Details Section -->
-                <div class="card slide-up">
+                <div class="card slide-up" id="client-section">
                     <div class="card-header">
                         <h4 class="card-title mb-0"><i class="fas fa-user me-2"></i>Client Details</h4>
                     </div>
@@ -117,7 +172,7 @@
             </div>
 
                 <!-- Receipt Details Section -->
-                <div class="card slide-up">
+                <div class="card slide-up" id="receipt-section">
                     <div class="card-header">
                         <h4 class="card-title mb-0"><i class="fas fa-file-invoice me-2"></i>Receipt Details</h4>
                     </div>
@@ -167,7 +222,7 @@
                 </div>
 
                 <!-- Items Section -->
-                <div class="card slide-up">
+                <div class="card slide-up" id="items-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title mb-0"><i class="fas fa-list me-2"></i>Items</h4>
                         <button type="button" class="btn btn-primary btn-sm" onclick="addItem()">
@@ -222,7 +277,7 @@
             </div>
 
                 <!-- Signature Section -->
-                <div class="card slide-up">
+                <div class="card slide-up" id="signature-section">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title mb-0"><i class="fas fa-signature me-2"></i>Digital Signature</h4>
                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearSignature()">
@@ -318,6 +373,57 @@
                 }
             }, 10000);
         });
+        
+        // Mobile Navigation Functions
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobileNavDrawer');
+            const overlay = document.getElementById('navOverlay');
+            const hamburger = document.querySelector('.hamburger-menu');
+            
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('show');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('show');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
+                document.getElementById('receiptForm').reset();
+                document.getElementById('logoPreview').style.display = 'none';
+                if (typeof clearSignature === 'function') {
+                    clearSignature();
+                }
+                // Clear items table
+                const itemsBody = document.getElementById('itemsBody');
+                if (itemsBody) {
+                    itemsBody.innerHTML = '';
+                }
+                calculateTotals();
+                
+                // Show confirmation
+                alert('All data has been cleared successfully.');
+            }
+        }
     </script>
     
     <!-- Mobile App Enhancement Script -->
