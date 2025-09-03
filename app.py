@@ -2,6 +2,7 @@ import os
 import uuid
 import json
 import qrcode
+from qrcode import QRCode
 import logging
 import threading
 import time
@@ -122,6 +123,15 @@ def generate_receipt():
             data['tax_amount'] = "{:.2f}".format(tax_amount)
             data['grand_total'] = "{:.2f}".format(max(0, grand_total))
         
+        # Set default values for missing fields
+        data.setdefault('payment_status', 'Pending')
+        data.setdefault('date', datetime.now().strftime('%Y-%m-%d'))
+        data.setdefault('currency_code', 'USD')
+        data.setdefault('currency_symbol', '$')
+        data.setdefault('tax_rate', '0')
+        data.setdefault('discount', '0')
+        data.setdefault('notes', '')
+        
         # Generate QR code with receipt summary
         qr_data = {
             'receipt_id': data.get('receipt_id'),
@@ -135,7 +145,7 @@ def generate_receipt():
         qr_filename = f"qr_{data.get('receipt_id')}.png"
         qr_path = os.path.join(app.config['QR_FOLDER'], qr_filename)
         
-        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        qr = QRCode(version=1, box_size=10, border=5)
         qr.add_data(json.dumps(qr_data))
         qr.make(fit=True)
         
