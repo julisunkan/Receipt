@@ -1,0 +1,164 @@
+/* Custom styles for Smart Receipt Generator */
+
+body {
+    background-color: var(--bs-dark);
+    min-height: 100vh;
+}
+
+.card {
+    border: 1px solid var(--bs-border-color);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: var(--bs-dark);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.card-title {
+    color: var(--bs-primary);
+}
+
+/* Form styling */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Items table styling */
+.table {
+    background-color: var(--bs-body-bg);
+}
+
+.table-bordered {
+    border: 1px solid var(--bs-border-color);
+}
+
+.table th {
+    background-color: var(--bs-secondary);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.table td {
+    border-color: var(--bs-border-color);
+}
+
+/* Signature canvas styling */
+#signatureCanvas {
+    border: 2px dashed var(--bs-border-color);
+    border-radius: 8px;
+    background-color: white;
+    cursor: crosshair;
+}
+
+/* Logo preview styling */
+.img-thumbnail {
+    border: 1px solid var(--bs-border-color);
+}
+
+/* Loading modal */
+.modal-content {
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .d-flex.justify-content-between .d-flex {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    #signatureCanvas {
+        height: 150px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .btn,
+    .card-header .btn,
+    .d-grid,
+    .modal,
+    nav {
+        display: none !important;
+    }
+    
+    .card {
+        border: none;
+        box-shadow: none;
+    }
+    
+    .card-body {
+        padding: 0;
+    }
+    
+    .table {
+        color: black !important;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        color: black !important;
+    }
+}
+
+/* Status badges */
+.badge.bg-success {
+    background-color: #198754 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Custom animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast notifications */
+.toast {
+    background-color: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+}
+
+.toast-header {
+    background-color: var(--bs-secondary);
+    border-bottom: 1px solid var(--bs-border-color);
+}

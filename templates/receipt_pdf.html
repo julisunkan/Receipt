@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt {{ data.receipt_id }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 20px;
+        }
+        
+        .business-info h1 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        
+        .business-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .logo-section img {
+            max-width: 150px;
+            max-height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .receipt-details {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .receipt-info, .client-info {
+            width: 48%;
+        }
+        
+        .receipt-info h3, .client-info h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .receipt-info p, .client-info p {
+            margin: 8px 0;
+        }
+        
+        .payment-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        
+        .status-paid { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-partial { background: #f8d7da; color: #721c24; }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .items-table th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .items-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .items-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .items-table .text-right {
+            text-align: right;
+        }
+        
+        .totals-section {
+            margin: 30px 0;
+            float: right;
+            width: 300px;
+        }
+        
+        .totals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .totals-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .totals-table tr:last-child td {
+            font-weight: bold;
+            font-size: 1.2em;
+            background: #007bff;
+            color: white;
+            border-bottom: none;
+        }
+        
+        .notes-section {
+            clear: both;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .notes-section h4 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .signature-box {
+            text-align: center;
+            width: 200px;
+        }
+        
+        .signature-box img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-width: 200px;
+            max-height: 100px;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 50px;
+            padding-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .qr-section {
+            text-align: center;
+        }
+        
+        .qr-section img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media print {
+            body { margin: 0; padding: 15px; }
+            .receipt-header { page-break-after: avoid; }
+            .items-table { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-header">
+        <div class="business-info">
+            <h1>{{ data.business_name or 'Business Name' }}</h1>
+            {% if data.business_address %}
+            <p>{{ data.business_address|replace('\n', '<br>')|safe }}</p>
+            {% endif %}
+            {% if data.business_email %}
+            <p>Email: {{ data.business_email }}</p>
+            {% endif %}
+            {% if data.business_phone %}
+            <p>Phone: {{ data.business_phone }}</p>
+            {% endif %}
+        </div>
+        <div class="logo-section">
+            {% if data.logo_filename %}
+            <img src="static/uploads/{{ data.logo_filename }}" alt="Business Logo">
+            {% else %}
+            <div style="width: 150px; height: 100px; border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 8px;">
+                <span>LOGO</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="receipt-details">
+        <div class="receipt-info">
+            <h3>Receipt Information</h3>
+            <p><strong>Receipt ID:</strong> {{ data.receipt_id }}</p>
+            <p><strong>Date:</strong> {{ data.date }}</p>
+            <p><strong>Currency:</strong> {{ data.currency_code }} {{ data.currency_symbol }}</p>
+            <p><strong>Payment Status:</strong> 
+                <span class="payment-status status-{{ data.payment_status.lower() }}">{{ data.payment_status }}</span>
+            </p>
+        </div>
+        <div class="client-info">
+            <h3>Bill To</h3>
+            <p><strong>{{ data.client_name or 'Client Name' }}</strong></p>
+            {% if data.client_address %}
+            <p>{{ data.client_address|replace('\n', '<br>')|safe }}</p>
+            {% endif %}
+            {% if data.client_email %}
+            <p>Email: {{ data.client_email }}</p>
+            {% endif %}
+            {% if data.client_phone %}
+            <p>Phone: {{ data.client_phone }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Item Description</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Unit Price</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(item.price|float) }}</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format((item.quantity|float * item.price|float)) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals-section">
+        <table class="totals-table">
+            <tr>
+                <td>Subtotal:</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.subtotal|float) }}</td>
+            </tr>
+            {% if data.tax_amount and data.tax_amount|float > 0 %}
+            <tr>
+                <td>Tax ({{ data.tax_rate }}%):</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.tax_amount|float) }}</td>
+            </tr>
+            {% endif %}
+            {% if data.discount and data.discount|float > 0 %}
+            <tr>
+                <td>Discount:</td>
+                <td class="text-right">-{{ data.currency_symbol }}{{ "%.2f"|format(data.discount|float) }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>Total Amount:</td>
+                <td class="text-right">{{ data.currency_symbol }}{{ "%.2f"|format(data.grand_total|float) }}</td>
+            </tr>
+        </table>
+    </div>
+
+    {% if data.notes %}
+    <div class="notes-section">
+        <h4>Notes</h4>
+        <p>{{ data.notes|replace('\n', '<br>')|safe }}</p>
+    </div>
+    {% endif %}
+
+    <div class="signature-section">
+        <div class="signature-box">
+            {% if data.signature %}
+            <img src="{{ data.signature }}" alt="Digital Signature">
+            {% else %}
+            <div class="signature-line">Authorized Signature</div>
+            {% endif %}
+        </div>
+        <div class="qr-section">
+            {% if data.qr_code_path %}
+            <img src="{{ data.qr_code_path[1:] }}" alt="QR Code" style="width: 100px; height: 100px;">
+            <br><small>Scan for receipt details</small>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        <p>Generated on {{ data.date }} | Receipt ID: {{ data.receipt_id }}</p>
+    </div>
+</body>
+</html>
