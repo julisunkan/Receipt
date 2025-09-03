@@ -1,0 +1,138 @@
+Build a Flask-based web app called "Smart Receipt Generator" with the following features:
+
+✅ 1. User Input Form
+
+Include a responsive form with the following input fields:
+
+Business Details:
+
+Business Name
+
+Business Address
+
+Business Email
+
+Business Phone
+
+Upload Business Logo (image file)
+
+Client Details:
+
+Client Name
+
+Client Address
+
+Client Email
+
+Client Phone
+
+Receipt Details:
+
+Currency selector (dropdown including all ISO 4217 codes and symbols — e.g., USD $, EUR €, NGN ₦)
+
+Tax (%) input
+
+Discount ($) input
+
+Payment Status (dropdown: Paid, Pending, Partial)
+
+Notes (textarea, optional)
+
+Date (auto-filled with current date)
+
+Auto-generated Receipt ID (UUID-based or incremental)
+
+Items Table:
+
+User can add/remove multiple line items, each with:
+
+Item Name
+
+Quantity
+
+Price per unit
+
+✅ 2. PDF Receipt Generation
+
+On form submit, generate a printable PDF of the receipt using pdfkit or WeasyPrint
+
+The PDF should include:
+
+Business logo (top right)
+
+Receipt ID and Date
+
+Currency symbols and correct formatting
+
+Client details
+
+Itemized list with subtotal, tax, discount, and grand total
+
+Notes field
+
+Payment status label (e.g., green for Paid, red for Pending)
+
+QR Code with embedded receipt summary (as plain text or JSON)
+
+Signature section at the bottom (typed or drawn)
+
+✅ 3. Additional Features
+
+QR Code: Generate a QR code with the receipt summary (use qrcode Python library)
+
+Signature Box: Allow user to sign with the mouse (use signature_pad JavaScript library)
+
+Currency selector: Include all global currencies (can be from a static JSON file or API)
+
+Print View: Include a “Print Receipt” button using window.print(), with CSS @media print support
+
+Import/Export Business Settings:
+
+Export business settings to a .json file
+
+Import from .json to pre-fill business fields (via JavaScript FileReader or Flask upload)
+
+Local Receipt History (Optional): Use browser localStorage to store and list past receipts
+
+✅ 4. File Structure
+
+Organize the project like this:
+
+receipt-generator/
+├── main.py
+├── templates/
+│   ├── index.html
+│   └── receipt_pdf.html
+├── static/
+│   ├── style.css
+│   ├── uploads/            # For uploaded logos
+│   ├── js/
+│   │   └── signature_pad.min.js
+│   └── qr/
+│       └── generated QR codes
+
+✅ 5. Dependencies (requirements.txt)
+flask
+pdfkit
+qrcode
+Pillow
+werkzeug
+
+
+Also install wkhtmltopdf (can be run using Replit Nix if needed)
+
+✅ 6. Deployment Notes
+
+Run the Flask app on Replit's web server
+
+Ensure image and PDF files are served correctly using send_file
+
+Save uploaded files temporarily in /static/uploads
+
+Use uuid.uuid4() for unique receipt IDs
+
+Add multi-language support
+
+Allow offline mode (with Service Workers)
+
+Add light/dark theme toggle
