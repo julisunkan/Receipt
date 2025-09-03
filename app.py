@@ -1,7 +1,7 @@
 import os
 import uuid
 import json
-import qrcode.main
+import qrcode
 import logging
 from datetime import datetime
 from io import BytesIO
@@ -98,7 +98,7 @@ def generate_receipt():
         qr_filename = f"qr_{data.get('receipt_id')}.png"
         qr_path = os.path.join(app.config['QR_FOLDER'], qr_filename)
         
-        qr = qrcode.main.QRCode(version=1, box_size=10, border=5)
+        qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(json.dumps(qr_data))
         qr.make(fit=True)
         
@@ -113,26 +113,15 @@ def generate_receipt():
             logo_path = os.path.join(app.config['UPLOAD_FOLDER'], data['logo_filename'])
             data['logo_absolute_path'] = os.path.abspath(logo_path)
         
-        # Debug: Log the data structure
-        logging.debug(f"Received data keys: {list(data.keys()) if hasattr(data, 'keys') else 'not a dict'}")
-        logging.debug(f"Items type: {type(data.get('items', 'missing'))}")
-        
         # Ensure items is a proper list
         items_data = data.get('items', [])
         if not isinstance(items_data, list):
-            logging.warning(f"Items is not a list, it's {type(items_data)}. Converting to list.")
             data['items'] = []
         else:
             data['items'] = items_data
-            logging.debug(f"Items count: {len(data['items'])}")
         
         # Generate PDF
-        try:
-            html_content = render_template('receipt_pdf.html', data=data)
-            logging.debug("Template rendered successfully")
-        except Exception as template_error:
-            logging.error(f"Template rendering error: {template_error}")
-            raise template_error
+        html_content = render_template('receipt_pdf.html', data=data)
         
         # PDF options
         options = {
