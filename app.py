@@ -16,6 +16,15 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
+# Custom template filter for currency formatting
+@app.template_filter('currency')
+def currency_filter(value):
+    """Format currency with thousands separator"""
+    try:
+        return "{:,.2f}".format(float(value))
+    except (ValueError, TypeError):
+        return "0.00"
+
 # Configure upload settings
 UPLOAD_FOLDER = 'static/uploads'
 QR_FOLDER = 'static/qr'
