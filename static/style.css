@@ -1,66 +1,230 @@
-/* Custom styles for Smart Receipt Generator */
+/* Mobile App Styles for Smart Receipt Generator */
 
 body {
-    background-color: var(--bs-dark);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Mobile App Container */
+.mobile-app-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
 }
 
+/* App Header */
+.app-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.app-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px 20px 0 0;
+    margin-top: 0;
+    padding: 1rem;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+}
+
 .card {
-    border: 1px solid var(--bs-border-color);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
-    background-color: var(--bs-dark);
-    border-bottom: 1px solid var(--bs-border-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: none;
+    padding: 1.25rem;
+    border-radius: 20px 20px 0 0;
 }
 
-.card-title {
-    color: var(--bs-primary);
+.card-header .card-title {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Form styling */
+.card-header i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-body {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.98);
+}
+
+/* Mobile Form Styling */
+.form-control,
+.form-select {
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    background: white;
+    transform: translateY(-1px);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Mobile Button Styling */
+.btn {
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    border: none;
 }
 
 .btn-primary {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
 
-/* Items table styling */
+.btn-outline-secondary {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+}
+
+/* Mobile Table Styling */
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 .table {
-    background-color: var(--bs-body-bg);
-}
-
-.table-bordered {
-    border: 1px solid var(--bs-border-color);
+    background-color: white;
+    margin-bottom: 0;
 }
 
 .table th {
-    background-color: var(--bs-secondary);
-    color: var(--bs-body-color);
-    border-color: var(--bs-border-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 1rem 0.75rem;
+    font-size: 0.9rem;
 }
 
 .table td {
-    border-color: var(--bs-border-color);
+    border: none;
+    border-bottom: 1px solid #e1e5e9;
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
 }
 
-/* Signature canvas styling */
-#signatureCanvas {
-    border: 2px dashed var(--bs-border-color);
+.table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+.table input {
+    border: 1px solid #e1e5e9;
     border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.table input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.1rem rgba(102, 126, 234, 0.15);
+}
+
+/* Mobile Signature Canvas */
+#signatureCanvas {
+    border: 2px dashed #667eea;
+    border-radius: 12px;
     background-color: white;
     cursor: crosshair;
+    width: 100%;
+    height: 200px;
+    touch-action: none;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Logo preview styling */
@@ -74,23 +238,76 @@ body {
     border: 1px solid var(--bs-border-color);
 }
 
-/* Responsive design */
+/* Mobile App Responsive Design */
 @media (max-width: 768px) {
-    .display-4 {
-        font-size: 2rem;
+    .mobile-app-container {
+        padding: 0;
     }
     
-    .d-flex.justify-content-between .d-flex {
-        flex-direction: column;
-        gap: 0.5rem;
+    .app-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .app-title {
+        font-size: 1.3rem;
+    }
+    
+    .mobile-nav {
+        padding: 0.75rem;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .card {
+        margin: 0 0.5rem 1rem 0.5rem;
+        border-radius: 15px;
+    }
+    
+    .card-header {
+        padding: 1rem;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 16px;
+        padding: 1rem;
     }
     
     .table-responsive {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .table input {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
     }
     
     #signatureCanvas {
-        height: 150px;
+        height: 180px;
+    }
+    
+    .modal-dialog {
+        margin: 1rem;
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem;
     }
 }
 
@@ -142,23 +359,148 @@ body {
     background-color: #dc3545 !important;
 }
 
-/* Custom animations */
+/* Mobile App Animations */
 .fade-in {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.6s ease-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
 }
 
-/* Toast notifications */
+.slide-up {
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* App Loading Animation */
+.app-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile Toast Notifications */
 .toast {
-    background-color: var(--bs-dark);
-    border: 1px solid var(--bs-border-color);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    margin: 0.5rem;
 }
 
 .toast-header {
-    background-color: var(--bs-secondary);
-    border-bottom: 1px solid var(--bs-border-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    font-weight: 600;
+}
+
+.toast-body {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Mobile App Status Bar */
+.app-status-bar {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 0.85rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* Mobile Receipt Preview */
+.receipt-preview {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Action Buttons */
+.mobile-actions {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.fab {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.fab-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.fab-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    backdrop-filter: blur(10px);
 }
