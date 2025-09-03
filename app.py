@@ -106,7 +106,7 @@ def generate_receipt():
         qr_img.save(qr_path)
         
         # Add QR code path to data
-        data['qr_code_path'] = f'/static/qr/{qr_filename}'
+        data['qr_code_path'] = os.path.abspath(qr_path)
         
         # Debug: Log the data structure
         logging.debug(f"Received data keys: {list(data.keys()) if hasattr(data, 'keys') else 'not a dict'}")

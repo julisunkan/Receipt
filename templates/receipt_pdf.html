@@ -18,9 +18,9 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #007bff;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
         
         .business-info h1 {
@@ -45,9 +45,9 @@
         .receipt-details {
             display: flex;
             justify-content: space-between;
-            margin: 30px 0;
+            margin: 15px 0;
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
         }
         
@@ -82,21 +82,23 @@
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 30px 0;
+            margin: 15px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .items-table th {
             background: #007bff;
             color: white;
-            padding: 12px;
+            padding: 8px;
             text-align: left;
             font-weight: bold;
+            font-size: 0.9em;
         }
         
         .items-table td {
-            padding: 10px 12px;
+            padding: 6px 8px;
             border-bottom: 1px solid #ddd;
+            font-size: 0.9em;
         }
         
         .items-table tr:nth-child(even) {
@@ -108,9 +110,9 @@
         }
         
         .totals-section {
-            margin: 30px 0;
+            margin: 15px 0;
             float: right;
-            width: 300px;
+            width: 280px;
         }
         
         .totals-table {
@@ -133,8 +135,8 @@
         
         .notes-section {
             clear: both;
-            margin: 30px 0;
-            padding: 20px;
+            margin: 15px 0;
+            padding: 15px;
             background: #f8f9fa;
             border-left: 4px solid #007bff;
             border-radius: 0 8px 8px 0;
@@ -149,8 +151,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: 50px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #ddd;
         }
         
@@ -185,11 +187,11 @@
         
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #ddd;
             color: #666;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
         
         @media print {
@@ -312,7 +314,7 @@
         </div>
         <div class="qr-section">
             {% if data.qr_code_path %}
-            <img src="{{ data.qr_code_path[1:] }}" alt="QR Code" style="width: 100px; height: 100px;">
+            <img src="file://{{ data.qr_code_path }}" alt="QR Code" style="width: 80px; height: 80px;">
             <br><small>Scan for receipt details</small>
             {% endif %}
         </div>
