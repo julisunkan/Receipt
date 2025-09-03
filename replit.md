@@ -32,10 +32,11 @@ Preferred communication style: Simple, everyday language.
 
 ### Core Features
 - **Receipt Generation**: UUID-based receipt ID generation with customizable business details
-- **PDF Export**: Server-side PDF generation using pdfkit
+- **PDF Export**: Server-side PDF generation using pdfkit with cross-platform wkhtmltopdf detection
 - **QR Code Integration**: Dynamic QR code generation for receipts
 - **Currency Support**: Comprehensive ISO 4217 currency codes with symbols
 - **Business Settings**: Import/export functionality for business configuration persistence
+- **Auto-Cleanup**: Automatic deletion of generated files after 1 minute for security
 
 ### Security and File Handling
 - **Upload Restrictions**: File type validation and size limits (16MB max)
@@ -57,7 +58,7 @@ Preferred communication style: Simple, everyday language.
 - **SignaturePad**: JavaScript library for digital signature capture
 
 ### System Dependencies
-- **wkhtmltopdf**: Required by pdfkit for PDF generation (system-level dependency)
+- **wkhtmltopdf**: Required by pdfkit for PDF generation (automatically detected across platforms)
 
 ### File System Requirements
 - **Static Directories**: Automated creation of upload and QR code directories

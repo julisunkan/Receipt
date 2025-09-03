@@ -11,8 +11,44 @@ from flask import Flask, render_template, request, jsonify, send_file, flash, re
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 import pdfkit
+import shutil
 
 logging.basicConfig(level=logging.DEBUG)
+
+def get_wkhtmltopdf_path():
+    """
+    Automatically detect wkhtmltopdf path for cross-platform compatibility
+    """
+    # Try common paths in order of preference
+    possible_paths = [
+        # Replit Nix path
+        '/nix/store/hxiay4lkq4389vxnhnb3d0pbaw6siwkw-wkhtmltopdf/bin/wkhtmltopdf',
+        # System PATH (most common)
+        shutil.which('wkhtmltopdf'),
+        # Common Linux paths
+        '/usr/bin/wkhtmltopdf',
+        '/usr/local/bin/wkhtmltopdf',
+        # PythonAnywhere paths
+        '/usr/local/bin/wkhtmltopdf',
+        '/home/username/.local/bin/wkhtmltopdf',
+        # Ubuntu/Debian
+        '/usr/bin/wkhtmltopdf',
+        # Windows paths
+        'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        'C:\\Program Files (x86)\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        # macOS paths
+        '/usr/local/bin/wkhtmltopdf',
+        '/opt/homebrew/bin/wkhtmltopdf'
+    ]
+    
+    for path in possible_paths:
+        if path and os.path.isfile(path) and os.access(path, os.X_OK):
+            logging.info(f"Found wkhtmltopdf at: {path}")
+            return path
+    
+    # If no path found, return None to use system default
+    logging.warning("wkhtmltopdf not found in common paths, using system default")
+    return None
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
@@ -164,14 +200,27 @@ def generate_receipt():
             'enable-local-file-access': None
         }
         
-        # Configure wkhtmltopdf path
-        config = pdfkit.configuration(wkhtmltopdf='/nix/store/hxiay4lkq4389vxnhnb3d0pbaw6siwkw-wkhtmltopdf/bin/wkhtmltopdf')
+        # Configure wkhtmltopdf path automatically
+        wkhtmltopdf_path = get_wkhtmltopdf_path()
+        config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path) if wkhtmltopdf_path else None
         
         # Generate PDF
         pdf_filename = f"receipt_{data.get('receipt_id')}.pdf"
         pdf_path = os.path.join('static', pdf_filename)
         
-        pdfkit.from_string(html_content, pdf_path, options=options, configuration=config)
+        try:
+            if config:
+                pdfkit.from_string(html_content, pdf_path, options=options, configuration=config)
+            else:
+                # Try without configuration (system default)
+                pdfkit.from_string(html_content, pdf_path, options=options)
+        except OSError as e:
+            if "wkhtmltopdf" in str(e).lower():
+                error_msg = "PDF generation requires wkhtmltopdf to be installed. Please install it using: sudo apt-get install wkhtmltopdf (Ubuntu/Debian) or visit https://wkhtmltopdf.org/downloads.html for other platforms."
+                logging.error(f"wkhtmltopdf not found: {e}")
+                return jsonify({'error': error_msg}), 500
+            else:
+                raise
         
         # Schedule automatic deletion of generated files after 1 minute
         delete_file_after_delay(pdf_path, 60)
