@@ -12,6 +12,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend Architecture
 - **Framework**: Vanilla JavaScript with Bootstrap 5 dark theme
+- **Progressive Web App**: Service worker for offline functionality, web app manifest, and installable app experience
 - **Responsive Design**: Mobile-first approach using Bootstrap's grid system
 - **Interactive Features**: Dynamic item management, signature pad integration, and real-time calculations
 - **File Upload**: Client-side file handling for business logos with validation
@@ -37,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - **Currency Support**: Comprehensive ISO 4217 currency codes with symbols
 - **Business Settings**: Import/export functionality for business configuration persistence
 - **Auto-Cleanup**: Automatic deletion of generated files after 1 minute for security
+- **Progressive Web App (PWA)**: Full PWA support with app installation, offline functionality, and native app-like experience
 
 ### Security and File Handling
 - **Upload Restrictions**: File type validation and size limits (16MB max)

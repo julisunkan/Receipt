@@ -1,0 +1,48 @@
+{
+  "name": "Smart Receipt Generator",
+  "short_name": "Receipt Gen",
+  "description": "Create professional receipts with business and client details, itemized billing, and QR codes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#212529",
+  "theme_color": "#0d6efd",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/static/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "monochrome"
+    }
+  ],
+  "categories": ["business", "productivity", "finance"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "New Receipt",
+      "short_name": "New",
+      "description": "Create a new receipt",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/static/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
